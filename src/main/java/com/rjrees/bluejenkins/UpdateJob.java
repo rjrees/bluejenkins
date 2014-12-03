@@ -2,6 +2,7 @@ package com.rjrees.bluejenkins;
 
 import com.rjrees.bluejenkins.jenkins.BuildStatus;
 import com.rjrees.bluejenkins.jenkins.JenkinsManager;
+import com.rjrees.bluejenkins.lights.LightManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class UpdateJob {
 
     private static Logger LOGGER = LoggerFactory.getLogger(UpdateJob.class);
 
+    // Light controller
+    private LightManager lightMgr;
+
     // Connection to the Jenkins Manager
     private JenkinsManager jenkinsMgr;
 
@@ -29,17 +33,17 @@ public class UpdateJob {
     private String build2;
 
     @Autowired
-    private UpdateJob(JenkinsManager jenkins) {
+    private UpdateJob(JenkinsManager jenkins , LightManager lights) {
         this.jenkinsMgr = jenkins;
-        LOGGER.info("Using Jenkins server at : " + jenkinsUrl);
-    }
+        this.lightMgr = lights;
+   }
 
     /**
      * This is the task performed by the scheduler to update the lights
      */
     public void updateLights() {
 
-        LOGGER.info("Updating lights! " + jenkinsUrl);
+        LOGGER.info("Updating lights : " + jenkinsUrl);
 
         jenkinsMgr.connect(jenkinsUrl, null, null);
         jenkinsMgr.refresh();
@@ -47,8 +51,6 @@ public class UpdateJob {
         BuildStatus status1 = jenkinsMgr.getJobStatusByName(build1);
         BuildStatus status2 = jenkinsMgr.getJobStatusByName(build2);
 
-        LOGGER.info(status1.toString());
-        LOGGER.info(status2.toString());
-
+        lightMgr.update(status1, status2);
     }
 }
