@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
  * Created by Gordon on 03/12/2014.
  */
 @Component
-public class UpdateJob {
+public class UpdateController {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(UpdateJob.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(UpdateController.class);
 
     // Light controller
     private LightManager lightMgr;
@@ -33,7 +33,7 @@ public class UpdateJob {
     private String build2;
 
     @Autowired
-    private UpdateJob(JenkinsManager jenkins , LightManager lights) {
+    private UpdateController(JenkinsManager jenkins, LightManager lights) {
         this.jenkinsMgr = jenkins;
         this.lightMgr = lights;
    }
@@ -47,6 +47,8 @@ public class UpdateJob {
 
         jenkinsMgr.connect(jenkinsUrl, null, null);
         jenkinsMgr.refresh();
+
+       // jenkinsMgr.listJobs();
 
         BuildStatus status1 = jenkinsMgr.getJobStatusByName(build1);
         BuildStatus status2 = jenkinsMgr.getJobStatusByName(build2);

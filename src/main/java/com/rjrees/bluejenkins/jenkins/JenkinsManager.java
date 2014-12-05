@@ -73,7 +73,7 @@ public class JenkinsManager {
         }
 
         try {
-            LOGGER.debug("Getting : " + name);
+            LOGGER.info("Getting : " + name);
             JobWithDetails job = jobs.get(name).details();
 
             //JobWithDetails job = jenkins.getJob(name);

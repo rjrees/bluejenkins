@@ -19,14 +19,14 @@ public class AppConfig {
     private static Logger LOGGER = LoggerFactory.getLogger(AppConfig.class);
 
     @Autowired
-    private UpdateJob theJob;
+    private UpdateController theJob;
 
     /**
      * This is the scheduled task that runs every 30 seconds
      * 1) reads the status of the jobs from Jenkins
      * 2) update the lights status
      */
-    @Scheduled(fixedDelay=5000)
+    @Scheduled(fixedDelay=30000)
     public void doSomething() {
         theJob.updateLights();
     }
